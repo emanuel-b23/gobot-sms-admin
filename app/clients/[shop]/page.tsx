@@ -2,6 +2,9 @@ import Link from "next/link";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { KillSwitchButton } from "@/components/kill-switch-button";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function ClientDetail({
   params,
 }: {

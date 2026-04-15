@@ -2,6 +2,9 @@ import Link from "next/link";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/sign-out-button";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 type Shop = {
   shop_domain: string;
   is_active: boolean;
