@@ -5,6 +5,7 @@ import { SignOutButton } from "@/components/sign-out-button";
 type Shop = {
   shop_domain: string;
   is_active: boolean;
+  admin_disabled: boolean;
   trial_started_at: string | null;
   trial_ended_at: string | null;
   trial_archived: boolean | null;
@@ -18,7 +19,8 @@ type Shop = {
 };
 
 function getStatus(shop: Shop) {
-  if (shop.uninstalled_at) return { label: "Inactive", color: "bg-gray-100 text-gray-700" };
+  if (shop.admin_disabled) return { label: "Admin Disabled", color: "bg-red-100 text-red-800" };
+  if (shop.uninstalled_at) return { label: "Uninstalled", color: "bg-gray-100 text-gray-700" };
   if (shop.trial_started_at && !shop.trial_ended_at) return { label: "Trial Active", color: "bg-yellow-100 text-yellow-800" };
   if (shop.trial_ended_at && !shop.trial_archived) return { label: "Trial Complete", color: "bg-blue-100 text-blue-800" };
   if (shop.trial_archived) return { label: "Post-Trial", color: "bg-green-100 text-green-800" };

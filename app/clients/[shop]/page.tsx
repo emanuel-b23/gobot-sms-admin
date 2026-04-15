@@ -79,11 +79,25 @@ export default async function ClientDetail({
             </Link>
             <h1 className="text-xl font-semibold text-gray-900 mt-1">{shop.shop_domain}</h1>
           </div>
-          <KillSwitchButton shopDomain={shop.shop_domain} isActive={shop.is_active} />
+          <KillSwitchButton shopDomain={shop.shop_domain} adminDisabled={shop.admin_disabled} />
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+        {shop.admin_disabled && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="text-sm font-semibold text-red-800">App is currently disabled by admin</div>
+            <div className="text-sm text-red-700 mt-1">
+              {shop.admin_disabled_reason || "No reason provided"}
+            </div>
+            {shop.admin_disabled_at && (
+              <div className="text-xs text-red-600 mt-1">
+                Disabled at: {new Date(shop.admin_disabled_at).toLocaleString()}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Status overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <InfoCard label="Widget" value={shop.is_active ? "ON" : "OFF"} valueClass={shop.is_active ? "text-green-700" : "text-gray-500"} />

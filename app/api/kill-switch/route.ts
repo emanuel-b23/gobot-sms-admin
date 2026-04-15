@@ -13,9 +13,10 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { shopDomain, action } = body as {
+  const { shopDomain, action, reason } = body as {
     shopDomain?: string;
     action?: "enable" | "disable";
+    reason?: string;
   };
 
   if (!shopDomain || !action) {
@@ -33,9 +34,22 @@ export async function POST(request: Request) {
   }
 
   const serviceClient = createServiceRoleClient();
+  const updates: Record<string, unknown> =
+    action === "disable"
+      ? {
+          admin_disabled: true,
+          admin_disabled_reason: reason || "Your Gobot SMS app has been disabled by support. Please contact us to restore service.",
+          admin_disabled_at: new Date().toISOString(),
+        }
+      : {
+          admin_disabled: false,
+          admin_disabled_reason: null,
+          admin_disabled_at: null,
+        };
+
   const { error } = await serviceClient
     .from("merchant_settings")
-    .update({ is_active: action === "enable" })
+    .update(updates)
     .eq("shop_domain", shopDomain);
 
   if (error) {
